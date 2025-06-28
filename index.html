@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,123 +13,139 @@
       --warning: #ff4444;
       --safe: #44ff99;
       --alert: #ffaa00;
-    }
+    }* {
+  box-sizing: border-box;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+body {
+  margin: 0;
+  padding: 1.5em;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-    body {
-      margin: 0;
-      padding: 1.5em;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+h1 {
+  font-size: 2em;
+  margin-bottom: 0.2em;
+  text-align: center;
+}
 
-    h1 {
-      font-size: 2em;
-      margin-bottom: 0.2em;
-      text-align: center;
-    }
+.card {
+  background-color: var(--card);
+  padding: 1.5em;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  margin-bottom: 2em;
+}
 
-    .card {
-      background-color: var(--card);
-      padding: 1.5em;
-      border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      width: 100%;
-      max-width: 420px;
-      text-align: center;
-      margin-bottom: 2em;
-    }
+.counter {
+  font-size: 1.3em;
+  margin: 0.5em 0;
+}
 
-    .counter {
-      font-size: 1.3em;
-      margin: 0.5em 0;
-    }
+button {
+  background-color: var(--accent);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 1em;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  margin-top: 1em;
+  transition: 0.2s ease;
+}
 
-    button {
-      background-color: var(--accent);
-      border: none;
-      border-radius: 12px;
-      padding: 12px 24px;
-      font-size: 1em;
-      font-weight: bold;
-      color: black;
-      cursor: pointer;
-      margin-top: 1em;
-      transition: 0.2s ease;
-    }
+button:hover {
+  filter: brightness(1.1);
+}
 
-    button:hover {
-      filter: brightness(1.1);
-    }
+#advice {
+  margin-top: 1em;
+  font-size: 0.95em;
+  font-weight: bold;
+}
 
-    #advice {
-      margin-top: 1em;
-      font-size: 0.95em;
-      font-weight: bold;
-    }
+canvas {
+  margin-top: 2em;
+  width: 100% !important;
+  max-width: 500px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1em;
+}
 
-    canvas {
-      margin-top: 2em;
-      width: 100% !important;
-      max-width: 500px;
-      background-color: #fff;
-      border-radius: 12px;
-      padding: 1em;
-    }
+#resetBtn {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ff4444;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.4em;
+  width: 48px;
+  height: 48px;
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+  z-index: 999;
+}
 
-    #resetBtn {
-      position: fixed;
-      bottom: 12px;
-      right: 12px;
-      background-color: rgba(255, 255, 255, 0.08);
-      color: #ff4444;
-      border: none;
-      border-radius: 50%;
-      font-size: 1.4em;
-      width: 48px;
-      height: 48px;
-      opacity: 0.2;
-      transition: opacity 0.3s ease;
-      z-index: 999;
-    }
+#resetBtn:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
 
-    #resetBtn:hover {
-      opacity: 0.8;
-      cursor: pointer;
-    }
+#editBtn {
+  position: fixed;
+  top: 1px;
+  left: 1px;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  opacity: 0.05;
+  z-index: 999;
+}
+
   </style>
 </head>
 <body>
-  <h1>☠️ Monster Tracker</h1>
-
-  <div class="card">
+  <h1>☠️ Monster Tracker</h1>  <div class="card">
     <p class="counter">Hoy has tomado: <span id="count">0</span> Monster(s)</p>
     <button onclick="addMonster()">+ Añadir Monster</button>
     <p id="advice"></p>
-  </div>
+  </div><canvas id="chart" height="250"></canvas> <canvas id="weekChart" height="250"></canvas>
 
-  <canvas id="chart" height="250"></canvas>
-
-  <button id="resetBtn" onclick="resetContador()">🗑️</button>
+<button id="resetBtn" onclick="resetContador()">🗑️</button> <button id="editBtn" onclick="editarDias()"></button>
 
   <script>
     const countSpan = document.getElementById("count");
     const advice = document.getElementById("advice");
     const chartCanvas = document.getElementById("chart");
+    const weekCanvas = document.getElementById("weekChart");
 
-    const CAFFEINE_LIMIT = 225;
+    const CAFFEINE_LIMIT = 100;
     const MONSTER_CAFFEINE = 160;
 
     function getTodayKey() {
       const now = new Date();
       return now.toISOString().split('T')[0];
+    }
+
+    function getWeekKey(date) {
+      const d = new Date(date);
+      const day = d.getDay();
+      const diff = d.getDate() - day + (day === 0 ? -6 : 1); // lunes
+      const monday = new Date(d.setDate(diff));
+      return 'semana_' + monday.toISOString().split('T')[0];
     }
 
     function loadData() {
@@ -143,12 +158,16 @@
 
     function addMonster() {
       const key = getTodayKey();
+      const week = getWeekKey(key);
       const data = loadData();
       if (!data[key]) data[key] = 0;
       data[key]++;
+      if (!data[week]) data[week] = 0;
+      data[week]++;
       saveData(data);
       updateCount();
       updateChart();
+      updateWeekChart();
     }
 
     function updateCount() {
@@ -159,7 +178,7 @@
 
       const caffeine = count * MONSTER_CAFFEINE;
       if (caffeine > CAFFEINE_LIMIT * 3) {
-        advice.textContent = `☠️ ${caffeine} mg de cafeína. Muy peligroso para tu edad.`;
+        advice.textContent = `☕️ ${caffeine} mg de cafeína. Muy peligroso para tu edad.`;
         advice.style.color = "var(--warning)";
       } else if (caffeine > CAFFEINE_LIMIT) {
         advice.textContent = `⚠️ ${caffeine} mg. Has superado el límite recomendado.`;
@@ -187,9 +206,7 @@
         counts.push(data[key] || 0);
       }
 
-      if (window.monsterChart) {
-        window.monsterChart.destroy();
-      }
+      if (window.monsterChart) window.monsterChart.destroy();
 
       window.monsterChart = new Chart(chartCanvas, {
         type: 'bar',
@@ -215,26 +232,90 @@
       });
     }
 
+    function updateWeekChart() {
+      const data = loadData();
+      const weekData = {};
+      Object.keys(data).forEach(key => {
+        if (key.startsWith("semana_")) {
+          weekData[key] = data[key];
+        }
+      });
+
+      const labels = Object.keys(weekData);
+      const values = labels.map(k => weekData[k]);
+
+      if (window.weeklyChart) window.weeklyChart.destroy();
+
+      window.weeklyChart = new Chart(weekCanvas, {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Total por semana',
+            data: values,
+            backgroundColor: labels.map(() => `hsl(${Math.random()*360}, 70%, 60%)`)
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+    }
+
     function resetContador() {
       if (confirm("¿Seguro que quieres borrar todos los datos?")) {
         localStorage.removeItem("monsterData");
         updateCount();
         updateChart();
+        updateWeekChart();
       }
     }
 
-    updateCount();
-    updateChart();
-let lastDay = getTodayKey();
+    function editarDias() {
+      const data = loadData();
+      const fechaJueves = prompt("Introduce la fecha del jueves (yyyy-mm-dd):");
+      if (fechaJueves) {
+        data[fechaJueves] = 3;
+        data[getWeekKey(fechaJueves)] = (data[getWeekKey(fechaJueves)] || 0) + 3;
+        const viernes = new Date(fechaJueves);
+        viernes.setDate(viernes.getDate() + 1);
+        const sabado = new Date(fechaJueves);
+        sabado.setDate(sabado.getDate() + 2);
+        const domingo = new Date(fechaJueves);
+        domingo.setDate(domingo.getDate() + 3);
+        const v = viernes.toISOString().split('T')[0];
+        const s = sabado.toISOString().split('T')[0];
+        const d = domingo.toISOString().split('T')[0];
+        data[v] = 1;
+        data[s] = 1;
+        data[d] = 0;
+        const semana = getWeekKey(fechaJueves);
+        data[semana] = (data[semana] || 0) + 2;
+        saveData(data);
+        updateCount();
+        updateChart();
+        updateWeekChart();
+      }
+    }
 
-setInterval(() => {
-  const currentDay = getTodayKey();
-  if (currentDay !== lastDay) {
-    lastDay = currentDay;
+    let lastDay = getTodayKey();
+    setInterval(() => {
+      const currentDay = getTodayKey();
+      if (currentDay !== lastDay) {
+        lastDay = currentDay;
+        updateCount();
+        updateChart();
+        updateWeekChart();
+      }
+    }, 60000);
+
     updateCount();
     updateChart();
-  }
-}, 60000); // revisa cada 60 segundos
-  </script>
-</body>
+    updateWeekChart();
+  </script></body>
 </html>
