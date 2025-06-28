@@ -225,6 +225,16 @@
 
     updateCount();
     updateChart();
+let lastDay = getTodayKey();
+
+setInterval(() => {
+  const currentDay = getTodayKey();
+  if (currentDay !== lastDay) {
+    lastDay = currentDay;
+    updateCount();
+    updateChart();
+  }
+}, 60000); // revisa cada 60 segundos
   </script>
 </body>
 </html>
